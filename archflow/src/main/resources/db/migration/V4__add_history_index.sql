@@ -1,0 +1,1 @@
+CREATE INDEX idx_blueprints_history ON blueprints(project_id, name, type, version DESC);
