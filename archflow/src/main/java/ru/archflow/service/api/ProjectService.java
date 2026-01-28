@@ -12,10 +12,12 @@ import ru.archflow.model.entity.enums.ProjectStatus;
 import ru.archflow.model.entity.list.Project;
 import ru.archflow.model.entity.list.ProjectMember;
 import ru.archflow.model.entity.list.User;
+import ru.archflow.repository.BlueprintMarkerRepository;
 import ru.archflow.repository.ProjectMemberRepository;
 import ru.archflow.repository.ProjectRepository;
 import ru.archflow.repository.UserRepository;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,6 +27,7 @@ public class ProjectService {
     private final UserRepository userRepository;
     private final ProjectRepository projectRepository;
     private final ProjectMemberRepository memberRepository;
+    private final BlueprintMarkerRepository markerRepository;
 
     @Transactional
     public ProjectResponse createProject(String name, String description, User creator) {
@@ -154,6 +157,18 @@ public class ProjectService {
             throw new RuntimeException("Only the current owner can transfer ownership");
 
         project.setStatus(newStatus);
+        projectRepository.save(project);
+    }
+
+    @Transactional
+    public void updateProjectBudget(Long projectId) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new RuntimeException("Project not found"));
+
+        BigDecimal total = markerRepository.calculateTotalBudgetByProjectId(projectId);
+
+        // Если меток нет, сумма будет null, превращаем в 0
+        project.setTotalBudget(total != null ? total : BigDecimal.ZERO);
         projectRepository.save(project);
     }
 

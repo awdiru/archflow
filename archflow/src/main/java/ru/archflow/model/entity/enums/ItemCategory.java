@@ -6,5 +6,6 @@ public enum ItemCategory {
     LIGHTING,       // Свет
     FURNITURE,      // Мебель
     PLUMBING,       // Сантехника
-    DECOR           // Декор
+    DECOR,          // Декор
+    OTHER
 }
