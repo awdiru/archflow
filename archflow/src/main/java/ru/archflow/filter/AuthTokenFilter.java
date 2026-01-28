@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-import ru.archflow.service.JwtUtils;
+import ru.archflow.service.util.JwtUtils;
 
 import java.io.IOException;
 

@@ -1,0 +1,1 @@
+ALTER TABLE blueprints ADD COLUMN change_log TEXT;

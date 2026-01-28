@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import ru.archflow.model.dto.project.CreateProjectRequest;
 import ru.archflow.model.dto.project.InviteMemberRequest;
 import ru.archflow.model.dto.project.UpdateMemberRoleRequest;
+import ru.archflow.model.entity.enums.ProjectStatus;
 import ru.archflow.model.entity.list.User;
-import ru.archflow.service.ProjectService;
+import ru.archflow.service.api.ProjectService;
 
 @RestController
 @RequestMapping("/api/projects")
@@ -36,9 +37,10 @@ public class ProjectController {
 
     @GetMapping
     @Operation(summary = "Получить список всех моих проектов")
-    public ResponseEntity<?> getMyProjects(@AuthenticationPrincipal User currentUser) {
+    public ResponseEntity<?> getMyProjects(@RequestParam(required = false) ProjectStatus status,
+                                           @AuthenticationPrincipal User currentUser) {
 
-        return ResponseEntity.ok(projectService.getUserProjects(currentUser.getId()));
+        return ResponseEntity.ok(projectService.getUserProjects(status, currentUser.getId()));
     }
 
     @GetMapping("/{id}")
@@ -87,6 +89,15 @@ public class ProjectController {
                                                   @AuthenticationPrincipal User currentUser) {
 
         projectService.transferOwnership(id, newOwnerId, currentUser.getId());
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> setProjectStatus(@PathVariable Long id,
+                                              @RequestParam ProjectStatus newStatus,
+                                              @AuthenticationPrincipal User currentUser) {
+
+        projectService.setProjectStatus(id, newStatus, currentUser.getId());
         return ResponseEntity.ok().build();
     }
 }

@@ -58,6 +58,5 @@ CREATE TABLE IF NOT EXISTS blueprint_markers (
 -- Индексы для ускорения поиска
 CREATE INDEX idx_projects_owner ON projects(owner_id);
 CREATE INDEX idx_blueprints_project ON blueprints(project_id);
-CREATE INDEX idx_markers_blueprint ON blueprint_markers(blueprint_id);
 -- Индекс GIN для быстрого поиска внутри JSON-координат (на будущее)
 CREATE INDEX idx_markers_coordinates ON blueprint_markers USING GIN (coordinates);

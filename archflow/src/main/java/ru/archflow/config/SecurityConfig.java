@@ -20,7 +20,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import ru.archflow.filter.AuthTokenFilter;
-import ru.archflow.service.JwtUtils;
+import ru.archflow.service.util.JwtUtils;
 
 import java.util.Arrays;
 

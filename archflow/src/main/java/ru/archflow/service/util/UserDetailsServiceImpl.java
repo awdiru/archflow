@@ -1,4 +1,4 @@
-package ru.archflow.service;
+package ru.archflow.service.util;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

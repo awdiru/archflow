@@ -1,4 +1,4 @@
-package ru.archflow.service;
+package ru.archflow.service.api;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,6 +13,8 @@ import ru.archflow.model.dto.user.RegisterRequest;
 import ru.archflow.model.entity.list.User;
 import ru.archflow.model.entity.enums.Role;
 import ru.archflow.repository.UserRepository;
+import ru.archflow.service.util.JwtUtils;
+import ru.archflow.service.util.MailService;
 
 @Service
 @RequiredArgsConstructor

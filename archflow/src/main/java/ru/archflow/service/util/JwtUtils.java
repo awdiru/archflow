@@ -1,4 +1,4 @@
-package ru.archflow.service;
+package ru.archflow.service.util;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -47,6 +47,7 @@ public class JwtUtils {
                     .parseSignedClaims(authToken);
             return true;
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             // Здесь будет ловиться ExpiredJwtException, MalformedJwtException и др.
         }
         return false;

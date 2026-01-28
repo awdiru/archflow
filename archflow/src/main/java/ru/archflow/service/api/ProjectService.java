@@ -1,4 +1,4 @@
-package ru.archflow.service;
+package ru.archflow.service.api;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -49,10 +49,14 @@ public class ProjectService {
     }
 
     @Transactional(readOnly = true)
-    public List<ProjectResponse> getUserProjects(Long userId) {
-        return projectRepository.findAllByUserId(userId).stream()
-                .map(this::mapToResponse)
-                .collect(Collectors.toList());
+    public List<ProjectResponse> getUserProjects(ProjectStatus status, Long userId) {
+        if (status == null)
+            return projectRepository.findAllByUserId(userId).stream()
+                    .map(this::mapToResponse)
+                    .toList();
+        return projectRepository.findAllByUserIdAndStatus(userId, status)
+                .stream().map(this::mapToResponse)
+                .toList();
     }
 
     @Transactional(readOnly = true)
@@ -142,12 +146,23 @@ public class ProjectService {
         memberRepository.saveAll(List.of(oldOwnerMember, newOwnerMember));
     }
 
+    @Transactional
+    public void setProjectStatus(Long projectId, ProjectStatus newStatus, Long adminId) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new RuntimeException("Project not found"));
+        if (!project.getOwner().getId().equals(adminId))
+            throw new RuntimeException("Only the current owner can transfer ownership");
+
+        project.setStatus(newStatus);
+        projectRepository.save(project);
+    }
+
     public void validateRoleAccess(Long projectId, Long userId, ProjectRole ... roles) {
         ProjectMember admin = memberRepository.findByProjectIdAndUserId(projectId, userId)
                 .orElseThrow(() -> new RuntimeException("Access denied"));
 
         for (ProjectRole role : roles) {
-            if (admin.getRole() != role)
+            if (admin.getRole().equals(role))
                 return;
         }
         throw new RuntimeException("Access denied");

@@ -3,10 +3,9 @@ package ru.archflow.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.archflow.model.dto.user.AuthResponse;
 import ru.archflow.model.dto.user.LoginRequest;
 import ru.archflow.model.dto.user.RegisterRequest;
-import ru.archflow.service.AuthService;
+import ru.archflow.service.api.AuthService;
 
 @RestController
 @RequestMapping("/api/auth")

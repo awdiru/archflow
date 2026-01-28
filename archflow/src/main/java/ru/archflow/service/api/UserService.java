@@ -1,4 +1,4 @@
-package ru.archflow.service;
+package ru.archflow.service.api;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;

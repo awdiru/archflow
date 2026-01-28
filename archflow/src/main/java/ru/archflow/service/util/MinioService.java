@@ -1,4 +1,4 @@
-package ru.archflow.service;
+package ru.archflow.service.util;
 
 import io.minio.*;
 import lombok.RequiredArgsConstructor;

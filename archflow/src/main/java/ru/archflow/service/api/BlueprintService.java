@@ -1,4 +1,4 @@
-package ru.archflow.service;
+package ru.archflow.service.api;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -8,9 +8,9 @@ import ru.archflow.model.dto.blueprint.BlueprintResponse;
 import ru.archflow.model.entity.enums.BlueprintType;
 import ru.archflow.model.entity.enums.ProjectRole;
 import ru.archflow.model.entity.list.Blueprint;
-import ru.archflow.model.entity.list.Project;
 import ru.archflow.repository.BlueprintRepository;
 import ru.archflow.repository.ProjectRepository;
+import ru.archflow.service.util.MinioService;
 
 import java.util.List;
 
@@ -28,20 +28,22 @@ public class BlueprintService {
 
         projectService.validateRoleAccess(projectId, userId, ProjectRole.OWNER, ProjectRole.EDITOR);
 
+        String newName = name == null || name.isEmpty() ? file.getOriginalFilename() : name;
+
         Integer lastVersion = blueprintRepository
-                .findFirstByProjectIdAndNameAndTypeOrderByVersionDesc(projectId, name, type)
+                .findFirstByProjectIdAndNameAndTypeOrderByVersionDesc(projectId, newName, type)
                 .map(Blueprint::getVersion)
                 .orElse(0);
 
         int newVersion = lastVersion + 1;
-        String fileName = String.format("projects/%d/%s_%s_v%d",
-                projectId, type.name(), name.replace(" ", "_"), newVersion);
+        String fileName = String.format("projects/%d/%s/v%d_%s",
+                projectId, type.name(), newVersion, newName.replace(" ", "_"));
 
         minioService.uploadFile(file, fileName);
 
         Blueprint blueprint = Blueprint.builder()
                 .project(projectRepository.getReferenceById(projectId))
-                .name(name)
+                .name(newName)
                 .type(type)
                 .fileUrl(fileName)
                 .version(newVersion)

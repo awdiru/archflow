@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import ru.archflow.service.UserService;
+import ru.archflow.service.api.UserService;
 
 @RestController
 @RequestMapping("/api/users")
