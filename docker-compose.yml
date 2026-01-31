@@ -26,6 +26,37 @@ services:
       - ./minio-data:/data
     restart: always
 
-volumes:
-  postgres-data:
-  minio-data:
+  redis:
+    image: redis:7-alpine
+    container_name: archflow-redis
+    ports:
+      - "6379:6379"
+    restart: always
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    container_name: archflow-kafka
+    ports:
+      - "9092:9092"
+      - "9093:9093"
+    environment:
+      # Настройки KRaft (Node ID и Роли)
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: 'controller,broker'
+      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@localhost:9093'
+
+      # Слушатели
+      KAFKA_LISTENERS: 'PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093'
+      KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://localhost:9092'
+      KAFKA_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'
+      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+
+      # Идентификатор кластера (нужен для инициализации без Zookeeper)
+      KAFKA_CLUSTER_ID: 'MkU3OEVBNTcwNTJENDM2Qk'
+
+      # Прочие настройки
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+    restart: always

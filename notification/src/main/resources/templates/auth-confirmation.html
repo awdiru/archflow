@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            background: #2c3e50;
+            color: #ffffff;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .content {
+            padding: 30px;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .credentials-box {
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: #3498db;
+            color: #ffffff !important;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .footer {
+            background: #f9f9f9;
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #777;
+        }
+
+        .highlight {
+            color: #2c3e50;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1 th:text="${company} + ' | ArchFlow'">Company Name | ArchFlow</h1>
+    </div>
+    <div class="content">
+        <h2>Добро пожаловать в рабочее пространство!</h2>
+        <p>Вы были добавлены в систему управления проектами <span class="highlight" th:text="${company}">Company</span>
+            на платформе <span class="highlight">ArchFlow</span>.</p>
+
+        <p>Для входа в систему используйте ваш email и временный пароль:</p>
+
+        <div class="credentials-box">
+            <p style="margin: 5px 0;"><strong>Ваш пароль:</strong> <code th:text="${password}"
+                                                                         style="font-size: 1.2em; color: #e74c3c;">temp-pass</code>
+            </p>
+            <p style="font-size: 12px; color: #666;">*Рекомендуем сменить пароль сразу после первого входа.</p>
+        </div>
+
+        <p>Чтобы активировать ваш аккаунт и подтвердить почту, нажмите на кнопку ниже:</p>
+
+        <div style="text-align: center;">
+            <a th:href="${confirmationUrl}" class="btn">Активировать аккаунт</a>
+        </div>
+
+        <p style="margin-top: 25px; font-size: 13px;">Если кнопка не работает, используйте ссылку:</p>
+        <p th:text="${confirmationUrl}" style="word-break: break-all; color: #3498db; font-size: 12px;"></p>
+    </div>
+    <div class="footer">
+        <p>&copy; 2026 <span th:text="${company}">Company</span> & ArchFlow Team.</p>
+        <p>Это автоматическое приглашение, созданное администратором вашей организации.</p>
+    </div>
+</div>
+</body>
+</html>
